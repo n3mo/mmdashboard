@@ -29,11 +29,15 @@ shinyServer(function(input, output, session) {
       load(infile$datapath)
       
       #This creates the word frequency table on summary page
-      freq <- colSums(as.matrix(dtm))
-      ord <- order(freq)
-      freq1 <- as.data.frame(freq[tail(ord, input$length1)])
-      names(freq1) <- c("Total")
-      freq1
+      ## freq <- colSums(as.matrix(dtm))
+      ## ord <- order(freq, decreasing=FALSE)
+      ## freq1 <- as.data.frame(freq[tail(ord, input$length1)])
+      ## names(freq1) <- c("Total")
+      ## freq1
+
+      freq <- data.frame(Total = sort(colSums(as.matrix(dtm)),
+                             decreasing=TRUE)) 
+      head(freq, input$length1)
     })
   })
   
@@ -47,8 +51,19 @@ shinyServer(function(input, output, session) {
           return(NULL)
         }
         load(infile$datapath)
-        freq <- colSums(as.matrix(dtm))
-        length(freq)
+
+        ## This retrieves the indices of hashtags
+        raw_hashtags = unlist(str_extract_all(d$text, 
+            "#[[:alpha:]][[:alnum:]_]+ "))
+
+        ## Number of occurences for each hashtag
+        hashtags = data.frame(Total = sort(table(raw_hashtags),
+            decreasing=TRUE)) 
+        ## colnames(hashtags) = "Total"
+
+        ## Display result
+        head(hashtags, 10)
+
       })
   })
   

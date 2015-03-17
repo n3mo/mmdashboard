@@ -56,5 +56,5 @@ dtm <- function(twitfile) {
       dtm$dimnames$Terms[i] = usrhash[as.numeric(substring(dtm$dimnames$Terms[i], 2))]
     }
   }
-  save(dtm, file="mmdashboard.rda")
+  save(list = c("d", "dtm"), file="mmdashboard.rda")
 }
